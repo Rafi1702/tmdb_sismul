@@ -4,6 +4,7 @@ import 'package:tmdb_sismul/models/movie.dart';
 import 'package:tmdb_sismul/presentations/movie/bloc/popular_movies/popular_movies_bloc.dart';
 import 'package:tmdb_sismul/presentations/movie/bloc/upcoming_movies/upcoming_movies_bloc.dart';
 import 'package:tmdb_sismul/presentations/movie/see_all_movies.dart';
+import 'package:tmdb_sismul/presentations/movie/widgets/movies_poster.dart';
 
 class MyHomePage extends StatefulWidget {
   static const route = '/';
@@ -49,7 +50,7 @@ class _PopularMovies extends StatelessWidget {
           previous.popularMovies != current.popularMovies,
       builder: (context, state) {
         switch (state.status) {
-          case PopularMovieStatus.loading:
+          case PopularMovieStatus.initial:
             return const Center(
               child: CircularProgressIndicator(),
             );
@@ -128,37 +129,13 @@ class _MoviesColumn extends StatelessWidget {
               return const SizedBox(width: 10.0);
             },
             itemBuilder: (context, index) {
-              return _MoviePoster(
-                posterPath:
-                    'http://image.tmdb.org/t/p/w500/${movies[index].posterPath}',
+              return MoviePoster(
+                posterPath: movies[index].posterPath,
               );
             },
           ),
         ),
       ],
-    );
-  }
-}
-
-class _MoviePoster extends StatelessWidget {
-  final String posterPath;
-  const _MoviePoster({required this.posterPath});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Container(
-        constraints: const BoxConstraints(minWidth: 116.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          image: DecorationImage(
-            image: NetworkImage(
-              posterPath,
-            ),
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
     );
   }
 }

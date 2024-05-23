@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tmdb_sismul/presentations/movie/bloc/popular_movies/popular_movies_bloc.dart';
 import 'package:tmdb_sismul/presentations/movie/bloc/upcoming_movies/upcoming_movies_bloc.dart';
+import 'package:tmdb_sismul/presentations/movie/widgets/movies_poster.dart';
 
 class SeeAllMoviesPage extends StatelessWidget {
   static const route = '/see_all_movies';
@@ -77,17 +78,23 @@ class _PopularMoviesGridState extends State<_PopularMoviesGrid> {
       value: widget.bloc as PopularMoviesBloc,
       child: BlocBuilder<PopularMoviesBloc, PopularMoviesState>(
         builder: (context, state) {
-          return SizedBox(
-            height: 200,
-            child: GridView.builder(
-              controller: _controller,
-              itemCount: state.allPopularMovies.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4),
-              itemBuilder: (context, index) {
-                return Text(state.allPopularMovies[index].title);
-              },
+          return GridView.builder(
+            controller: _controller,
+            itemCount: state.hasReachedMax
+                ? state.allPopularMovies.length
+                : state.allPopularMovies.length + 1,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisSpacing: 20.0,
+              crossAxisSpacing: 10.0,
+              childAspectRatio: 1 / 2,
             ),
+            itemBuilder: (context, index) {
+              return index >= state.allPopularMovies.length
+                  ? const Center(child: CircularProgressIndicator())
+                  : MoviePoster(
+                      posterPath: state.allPopularMovies[index].posterPath);
+            },
           );
         },
       ),
