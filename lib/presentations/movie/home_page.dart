@@ -45,30 +45,36 @@ class _PopularMovies extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PopularMoviesBloc, PopularMoviesState>(
-      buildWhen: (previous, current) =>
-          previous.popularMovies != current.popularMovies,
-      builder: (context, state) {
-        switch (state.status) {
-          case PopularMovieStatus.initial:
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          case PopularMovieStatus.loaded:
-            return _MoviesColumn(
-              title: 'Popular Movies',
-              movies: state.popularMovies,
-              route: SeeAllMoviesPage.route,
-              arguments: BlocProvider.of<PopularMoviesBloc>(context),
-            );
-          case PopularMovieStatus.error:
-            return Center(
-              child: Text(state.errorMessage),
-            );
-          default:
-            return Container();
-        }
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _MovieListHeader(
+          title: 'Popular Movies',
+          arguments: BlocProvider.of<PopularMoviesBloc>(context),
+        ),
+        BlocBuilder<PopularMoviesBloc, PopularMoviesState>(
+          buildWhen: (previous, current) =>
+              previous.popularMovies != current.popularMovies,
+          builder: (context, state) {
+            switch (state.status) {
+              case PopularMovieStatus.initial:
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              case PopularMovieStatus.loaded:
+                return _MoviesList(
+                  movies: state.popularMovies,
+                );
+              case PopularMovieStatus.error:
+                return Center(
+                  child: Text(state.errorMessage),
+                );
+              default:
+                return Container();
+            }
+          },
+        ),
+      ],
     );
   }
 }
@@ -78,64 +84,88 @@ class _UpComingMovies extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UpcomingMoviesBloc, UpcomingMoviesState>(
-      builder: (context, state) {
-        return _MoviesColumn(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _MovieListHeader(
           title: 'Upcoming Movies',
-          movies: const [],
-          route: SeeAllMoviesPage.route,
           arguments: BlocProvider.of<UpcomingMoviesBloc>(context),
-        );
-      },
+        ),
+        BlocBuilder<UpcomingMoviesBloc, UpcomingMoviesState>(
+          builder: (context, state) {
+            switch (state.status) {
+              case UpcomingMovieStatus.initial:
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              case UpcomingMovieStatus.loaded:
+                return _MoviesList(
+                  movies: state.upComingMovies,
+                );
+              case UpcomingMovieStatus.error:
+                return Center(
+                  child: Text(state.errorMessage),
+                );
+              default:
+                return Container();
+            }
+          },
+        ),
+      ],
     );
   }
 }
 
-class _MoviesColumn extends StatelessWidget {
-  final List<Movie> movies;
-  final String route;
+class _MovieListHeader extends StatelessWidget {
   final Object arguments;
   final String title;
-  const _MoviesColumn({
-    required this.movies,
-    required this.route,
+  const _MovieListHeader({
     required this.arguments,
     required this.title,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(title, style: Theme.of(context).textTheme.bodyLarge),
-            TextButton(
-                child: const Text('See All'),
-                onPressed: () {
-                  Navigator.of(context).pushNamed(route, arguments: arguments);
-                }),
-          ],
-        ),
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxHeight: 200.0),
-          child: ListView.separated(
-            clipBehavior: Clip.none,
-            scrollDirection: Axis.horizontal,
-            itemCount: movies.length,
-            separatorBuilder: (context, index) {
-              return const SizedBox(width: 10.0);
-            },
-            itemBuilder: (context, index) {
-              return MoviePoster(
-                posterPath: movies[index].posterPath,
-              );
-            },
-          ),
+        Text(title, style: Theme.of(context).textTheme.bodyLarge),
+        TextButton(
+          child: const Text('See All'),
+          onPressed: () {
+            Navigator.of(context)
+                .pushNamed(SeeAllMoviesPage.route, arguments: arguments);
+          },
         ),
       ],
+    );
+  }
+}
+
+class _MoviesList extends StatelessWidget {
+  final List<Movie> movies;
+
+  const _MoviesList({
+    required this.movies,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxHeight: 200.0),
+      child: ListView.separated(
+        clipBehavior: Clip.none,
+        scrollDirection: Axis.horizontal,
+        itemCount: movies.length,
+        separatorBuilder: (context, index) {
+          return const SizedBox(width: 10.0);
+        },
+        itemBuilder: (context, index) {
+          return MoviePoster(
+            posterPath: movies[index].posterPath,
+          );
+        },
+      ),
     );
   }
 }

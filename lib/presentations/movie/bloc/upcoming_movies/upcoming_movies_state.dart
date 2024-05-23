@@ -11,8 +11,19 @@ class UpcomingMoviesState extends Equatable {
 
   final List<Movie> upComingMovies;
   final UpcomingMovieStatus status;
-  final String? errorMessage;
+  final String errorMessage;
+
+  UpcomingMoviesState copyWith(
+      {List<Movie>? upComingMovies,
+      UpcomingMovieStatus? status,
+      String? errorMessage}) {
+    return UpcomingMoviesState(
+      upComingMovies: upComingMovies ?? this.upComingMovies,
+      status: status ?? this.status,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [upComingMovies, status, errorMessage];
 }

@@ -41,7 +41,8 @@ class MyApp extends StatelessWidget {
                       sl<PopularMoviesBloc>()..add(GetPopularMoviesEvent()),
                 ),
                 BlocProvider(
-                  create: (context) => sl<UpcomingMoviesBloc>(),
+                  create: (context) =>
+                      sl<UpcomingMoviesBloc>()..add(GetUpcomingMoviesEvent()),
                 ),
               ],
               child: const MyHomePage(title: 'Flutter Demo Home Page'),

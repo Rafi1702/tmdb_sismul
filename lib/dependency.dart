@@ -14,5 +14,5 @@ Future<void> initializeDependencies() async {
   //Movies
   sl.registerSingleton<MovieRepository>(MovieRepository(sl()));
   sl.registerSingleton<PopularMoviesBloc>(PopularMoviesBloc(repo: sl()));
-  sl.registerSingleton<UpcomingMoviesBloc>(UpcomingMoviesBloc());
+  sl.registerSingleton<UpcomingMoviesBloc>(UpcomingMoviesBloc(repo: sl()));
 }

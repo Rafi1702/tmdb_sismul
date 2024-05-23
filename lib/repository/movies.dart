@@ -18,9 +18,9 @@ class MovieRepository {
     }
   }
 
-  Future<List<Movie>> getUpcomingMovies() async {
+  Future<List<Movie>> getUpcomingMovies({int? page}) async {
     try {
-      final response = await client.get('/movie/upcoming');
+      final response = await client.get('/movie/upcoming?page=$page');
       return (response.data['results'] as List)
           .map((e) => Movie.fromJson(e))
           .toList();
