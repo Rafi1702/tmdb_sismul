@@ -4,3 +4,5 @@ class PopularMoviesEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class GetPopularMoviesEvent extends PopularMoviesEvent {}
