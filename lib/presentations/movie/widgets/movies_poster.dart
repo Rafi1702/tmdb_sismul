@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tmdb_sismul/models/movie.dart';
+import 'package:tmdb_sismul/presentations/movie/movie_detail_page.dart';
 
 class MoviePoster extends StatelessWidget {
   final Movie movie;
@@ -10,7 +11,8 @@ class MoviePoster extends StatelessWidget {
     return GestureDetector(
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context).pushNamed('');
+          Navigator.of(context)
+              .pushNamed(MoviesDetailPage.route, arguments: movie.id);
         },
         child: Container(
           padding: const EdgeInsets.only(top: 4.0, left: 4.0),

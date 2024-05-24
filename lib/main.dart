@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:tmdb_sismul/dependency.dart';
+import 'package:tmdb_sismul/presentations/movie/bloc/movie_detail/movie_detail_bloc.dart';
 
 import 'package:tmdb_sismul/presentations/movie/bloc/popular_movies/popular_movies_bloc.dart';
 import 'package:tmdb_sismul/presentations/movie/bloc/upcoming_movies/upcoming_movies_bloc.dart';
@@ -52,7 +53,12 @@ class MyApp extends StatelessWidget {
           return const SeeAllMoviesPage();
         },
         MoviesDetailPage.route: (context) {
-          return const MoviesDetailPage();
+          final id = ModalRoute.of(context)!.settings.arguments as int;
+          return BlocProvider(
+            create: (context) =>
+                sl<MovieDetailBloc>()..add(GetMovieDetailEvent(id)),
+            child: const MoviesDetailPage(),
+          );
         }
       },
     );

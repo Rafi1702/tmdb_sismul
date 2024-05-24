@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:tmdb_sismul/models/movie.dart';
+import 'package:tmdb_sismul/models/movie_trailer.dart';
 
 class MovieRepository {
   final Dio client;
@@ -34,6 +35,18 @@ class MovieRepository {
       final response = await client.get('/movie/$id');
 
       return Movie.fromJson(response.data);
+    } on DioException catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<List<MovieTrailer>> getMovieTrailer(int id) async {
+    try {
+      final response = await client.get('/movie/$id');
+
+      return (response.data['results'] as List)
+          .map((e) => MovieTrailer.fromJson(e))
+          .toList();
     } on DioException catch (e) {
       throw Exception(e);
     }
