@@ -6,6 +6,7 @@ import 'package:tmdb_sismul/dependency.dart';
 import 'package:tmdb_sismul/presentations/movie/bloc/popular_movies/popular_movies_bloc.dart';
 import 'package:tmdb_sismul/presentations/movie/bloc/upcoming_movies/upcoming_movies_bloc.dart';
 import 'package:tmdb_sismul/presentations/movie/home_page.dart';
+import 'package:tmdb_sismul/presentations/movie/movie_detail_page.dart';
 import 'package:tmdb_sismul/presentations/movie/see_all_movies.dart';
 
 void main() async {
@@ -49,6 +50,9 @@ class MyApp extends StatelessWidget {
             ),
         SeeAllMoviesPage.route: (context) {
           return const SeeAllMoviesPage();
+        },
+        MoviesDetailPage.route: (context) {
+          return const MoviesDetailPage();
         }
       },
     );

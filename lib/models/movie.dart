@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final movie = movieFromJson(jsonString);
-
 import 'dart:convert';
 
 Movie movieFromJson(String str) => Movie.fromJson(json.decode(str));
@@ -9,49 +5,55 @@ Movie movieFromJson(String str) => Movie.fromJson(json.decode(str));
 String movieToJson(Movie data) => json.encode(data.toJson());
 
 class Movie {
-  final bool adult;
-  final String backdropPath;
-  final List<int> genreIds;
+  final bool? adult;
+  final String? backdropPath;
+  final List<int>? genreIds;
   final int id;
-  final String originalLanguage;
-  final String originalTitle;
-  final String overview;
-  final double popularity;
-  final String posterPath;
-  final DateTime releaseDate;
-  final String title;
-  final bool video;
-  final double voteAverage;
-  final int voteCount;
+  final String? originalLanguage;
+  final String? originalTitle;
+  final String? overview;
+  final double? popularity;
+  final String? posterPath;
+  final DateTime? releaseDate;
+  final String? title;
+  final bool? video;
+  final double? voteAverage;
+  final int? voteCount;
 
-  Movie({
-    required this.adult,
-    required this.backdropPath,
-    required this.genreIds,
+  const Movie({
+    this.adult,
+    this.backdropPath,
+    this.genreIds,
     required this.id,
-    required this.originalLanguage,
-    required this.originalTitle,
-    required this.overview,
-    required this.popularity,
-    required this.posterPath,
-    required this.releaseDate,
-    required this.title,
-    required this.video,
-    required this.voteAverage,
-    required this.voteCount,
+    this.originalLanguage,
+    this.originalTitle,
+    this.overview,
+    this.popularity,
+    this.posterPath,
+    this.releaseDate,
+    this.title,
+    this.video,
+    this.voteAverage,
+    this.voteCount,
   });
+
+  static const empty = Movie(id: 0);
 
   factory Movie.fromJson(Map<String, dynamic> json) => Movie(
         adult: json["adult"],
         backdropPath: json["backdrop_path"],
-        genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
+        genreIds: json["genre_ids"] == null
+            ? []
+            : List<int>.from(json["genre_ids"]!.map((x) => x)),
         id: json["id"],
         originalLanguage: json["original_language"],
         originalTitle: json["original_title"],
         overview: json["overview"],
         popularity: json["popularity"]?.toDouble(),
         posterPath: json["poster_path"],
-        releaseDate: DateTime.parse(json["release_date"]),
+        releaseDate: json["release_date"] == null
+            ? null
+            : DateTime.parse(json["release_date"]),
         title: json["title"],
         video: json["video"],
         voteAverage: json["vote_average"]?.toDouble(),
@@ -61,7 +63,8 @@ class Movie {
   Map<String, dynamic> toJson() => {
         "adult": adult,
         "backdrop_path": backdropPath,
-        "genre_ids": List<dynamic>.from(genreIds.map((x) => x)),
+        "genre_ids":
+            genreIds == null ? [] : List<dynamic>.from(genreIds!.map((x) => x)),
         "id": id,
         "original_language": originalLanguage,
         "original_title": originalTitle,
@@ -69,7 +72,7 @@ class Movie {
         "popularity": popularity,
         "poster_path": posterPath,
         "release_date":
-            "${releaseDate.year.toString().padLeft(4, '0')}-${releaseDate.month.toString().padLeft(2, '0')}-${releaseDate.day.toString().padLeft(2, '0')}",
+            "${releaseDate!.year.toString().padLeft(4, '0')}-${releaseDate!.month.toString().padLeft(2, '0')}-${releaseDate!.day.toString().padLeft(2, '0')}",
         "title": title,
         "video": video,
         "vote_average": voteAverage,

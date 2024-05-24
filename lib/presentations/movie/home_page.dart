@@ -162,7 +162,7 @@ class _MoviesList extends StatelessWidget {
         },
         itemBuilder: (context, index) {
           return MoviePoster(
-            posterPath: movies[index].posterPath,
+            movie: movies[index],
           );
         },
       ),

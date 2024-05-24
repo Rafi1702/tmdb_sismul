@@ -28,4 +28,14 @@ class MovieRepository {
       throw Exception(e);
     }
   }
+
+  Future<Movie> getMovieDetails(int id) async {
+    try {
+      final response = await client.get('/movie/$id');
+
+      return Movie.fromJson(response.data);
+    } on DioException catch (e) {
+      throw Exception(e);
+    }
+  }
 }

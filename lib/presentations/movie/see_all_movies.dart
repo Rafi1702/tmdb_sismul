@@ -47,6 +47,21 @@ class _UpcomingMoviesGrid extends StatefulWidget {
 }
 
 class __UpcomingMoviesGridState extends State<_UpcomingMoviesGrid> {
+  final ScrollController _controller = ScrollController();
+
+  @override
+  void initState() {
+    _controller.addListener(scrollListener);
+    super.initState();
+  }
+
+  void scrollListener() {
+    if (_controller.offset >= _controller.position.maxScrollExtent &&
+        !_controller.position.outOfRange) {
+      (widget.bloc as UpcomingMoviesBloc).add(GetUpcomingMoviesEvent());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
@@ -54,9 +69,9 @@ class __UpcomingMoviesGridState extends State<_UpcomingMoviesGrid> {
       child: BlocBuilder<UpcomingMoviesBloc, UpcomingMoviesState>(
         builder: (context, state) {
           return _PosterGrid(
-              hasReachedMax: true,
-              movies: state.upComingMovies,
-              controller: ScrollController());
+              hasReachedMax: state.hasReachedMax,
+              movies: state.allUpcomingMovies,
+              controller: _controller);
         },
       ),
     );
@@ -120,20 +135,33 @@ class _PosterGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      controller: _controller,
-      itemCount: hasReachedMax ? movies.length : movies.length + 1,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        mainAxisSpacing: 20.0,
-        crossAxisSpacing: 10.0,
-        childAspectRatio: 1 / 2,
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16.0,
+        vertical: 10.0,
       ),
-      itemBuilder: (context, index) {
-        return index >= movies.length
-            ? const Center(child: CircularProgressIndicator())
-            : MoviePoster(posterPath: movies[index].posterPath);
-      },
+      child: GridView.builder(
+        clipBehavior: Clip.none,
+        controller: _controller,
+        itemCount: hasReachedMax ? movies.length : movies.length + 1,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 10.0,
+          mainAxisSpacing: 10.0,
+          childAspectRatio: 1 / 2,
+        ),
+        itemBuilder: (context, index) {
+          return index >= movies.length
+              ? const Center(child: CircularProgressIndicator())
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(flex: 5, child: MoviePoster(movie: movies[index])),
+                    Expanded(child: Text(movies[index].title ?? 'No Title')),
+                  ],
+                );
+        },
+      ),
     );
   }
 }
