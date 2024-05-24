@@ -18,12 +18,14 @@ class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
     emit(state.copyWith(status: MovieDetailStatus.loading));
     try {
       final movieDetail = await repo.getMovieDetails(event.id);
+
       final movieTrailer = await repo.getMovieTrailer(event.id);
+
       emit(
         state.copyWith(
           movie: movieDetail,
           trailer: movieTrailer,
-          status: MovieDetailStatus.success,
+          status: MovieDetailStatus.loaded,
         ),
       );
     } catch (e) {

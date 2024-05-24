@@ -52,12 +52,12 @@ class MyApp extends StatelessWidget {
         SeeAllMoviesPage.route: (context) {
           return const SeeAllMoviesPage();
         },
-        MoviesDetailPage.route: (context) {
+        MovieDetailPage.route: (context) {
           final id = ModalRoute.of(context)!.settings.arguments as int;
           return BlocProvider(
             create: (context) =>
                 sl<MovieDetailBloc>()..add(GetMovieDetailEvent(id)),
-            child: const MoviesDetailPage(),
+            child: const MovieDetailPage(),
           );
         }
       },

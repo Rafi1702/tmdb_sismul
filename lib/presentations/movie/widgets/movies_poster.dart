@@ -12,7 +12,7 @@ class MoviePoster extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           Navigator.of(context)
-              .pushNamed(MoviesDetailPage.route, arguments: movie.id);
+              .pushNamed(MovieDetailPage.route, arguments: movie.id);
         },
         child: Container(
           padding: const EdgeInsets.only(top: 4.0, left: 4.0),

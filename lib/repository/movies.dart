@@ -42,7 +42,7 @@ class MovieRepository {
 
   Future<List<MovieTrailer>> getMovieTrailer(int id) async {
     try {
-      final response = await client.get('/movie/$id');
+      final response = await client.get('/movie/$id/videos');
 
       return (response.data['results'] as List)
           .map((e) => MovieTrailer.fromJson(e))
