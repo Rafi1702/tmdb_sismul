@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import 'package:tmdb_sismul/dependency.dart';
 import 'package:tmdb_sismul/presentations/movie/bloc/movie_detail/movie_detail_bloc.dart';
 
@@ -12,7 +12,7 @@ import 'package:tmdb_sismul/presentations/movie/see_all_movies.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env");
+
   await initializeDependencies();
   runApp(const MyApp());
 }
