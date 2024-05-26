@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tmdb_sismul/models/movie_detail.dart';
 import 'package:tmdb_sismul/presentations/movie/bloc/movie_detail/movie_detail_bloc.dart';
+import 'package:tmdb_sismul/presentations/movie/widgets/movies_poster.dart';
 
 // class MoviesDetailPage extends StatefulWidget {
 //   static const route = '/movie_detail';
@@ -56,7 +58,15 @@ class MovieDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: _MovieBody(),
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+              child: _MovieBody(),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -75,10 +85,9 @@ class _MovieBody extends StatelessWidget {
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Expanded(
-                  child:
-                      _MoviePicture(imageUrl: state.movie.backdropPath ?? ''),
-                ),
+                Expanded(child: _MoviePicture(movie: state.movie)),
+                Expanded(child: _MovieDetail(movie: state.movie)),
+                const SizedBox(height: 10.0),
                 const Expanded(child: _MovieDescription()),
               ],
             );
@@ -93,21 +102,68 @@ class _MovieBody extends StatelessWidget {
 }
 
 class _MoviePicture extends StatelessWidget {
-  final String imageUrl;
-  const _MoviePicture({required this.imageUrl});
+  final MovieDetail movie;
+  const _MoviePicture({required this.movie});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: NetworkImage('http://image.tmdb.org/t/p/w500/$imageUrl'),
-          ),
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: NetworkImage(
+              'http://image.tmdb.org/t/p/w500/${movie.backdropPath ?? ''}'),
         ),
-        child: Container(
-          color: Colors.black.withOpacity(0.3),
-        ));
+      ),
+      child: Container(
+        color: Colors.black.withOpacity(0.5),
+      ),
+    );
+  }
+}
+
+class _MovieDetail extends StatelessWidget {
+  const _MovieDetail({
+    required this.movie,
+  });
+
+  final MovieDetail movie;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Row(
+        children: [
+          MoviePoster(
+            constraints: const BoxConstraints(
+              minWidth: 100.0,
+              maxWidth: 100.0,
+              minHeight: 130.0,
+              maxHeight: 130.0,
+            ),
+            posterPath: movie.posterPath!,
+            vote: movie.voteAverage!,
+            movieId: movie.id!,
+            isActive: false,
+            isRatingShowed: false,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(movie.title ?? ''),
+              Row(
+                children: [
+                  Text(movie.originalLanguage ?? ''),
+                  Text(movie.voteAverage!.toStringAsFixed(1)),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -116,6 +172,6 @@ class _MovieDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(child: const Text('Container'));
   }
 }

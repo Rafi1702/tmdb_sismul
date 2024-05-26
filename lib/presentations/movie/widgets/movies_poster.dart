@@ -1,27 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:tmdb_sismul/models/movie.dart';
+
 import 'package:tmdb_sismul/presentations/movie/movie_detail_page.dart';
 
 class MoviePoster extends StatelessWidget {
-  final Movie movie;
-  const MoviePoster({super.key, required this.movie});
+  final double vote;
+  final String posterPath;
+  final int movieId;
+  final bool? isActive;
+  final BoxConstraints? constraints;
+  final bool? isRatingShowed;
+  const MoviePoster({
+    super.key,
+    required this.vote,
+    required this.posterPath,
+    required this.movieId,
+    this.isActive = true,
+    this.isRatingShowed = true,
+    this.constraints,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context)
-              .pushNamed(MovieDetailPage.route, arguments: movie.id);
+          isActive ?? true
+              ? Navigator.of(context)
+                  .pushNamed(MovieDetailPage.route, arguments: movieId)
+              : null;
         },
         child: Container(
           padding: const EdgeInsets.only(top: 4.0, left: 4.0),
-          constraints: const BoxConstraints(minWidth: 116.0),
+          constraints: constraints ??
+              const BoxConstraints(
+                minWidth: 116.0,
+                maxWidth: 116.0,
+                minHeight: 200.0,
+                maxHeight: 200.0,
+              ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
             image: DecorationImage(
               image: Image.network(
-                'http://image.tmdb.org/t/p/w300/${movie.posterPath}',
+                'http://image.tmdb.org/t/p/w500/$posterPath',
                 loadingBuilder: ((context, child, loadingProgress) {
                   return Center(
                     child: CircularProgressIndicator(
@@ -36,15 +57,17 @@ class MoviePoster extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          child: Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              '⭐ ${movie.voteAverage?.toStringAsFixed(1)}',
-              style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                    color: Colors.white,
+          child: isRatingShowed ?? true
+              ? Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    '⭐ ${vote.toStringAsFixed(1)}',
+                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                          color: Colors.white,
+                        ),
                   ),
-            ),
-          ),
+                )
+              : null,
         ),
       ),
     );

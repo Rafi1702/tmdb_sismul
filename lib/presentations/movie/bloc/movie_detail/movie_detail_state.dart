@@ -4,29 +4,33 @@ enum MovieDetailStatus { initial, loading, loaded, error }
 
 class MovieDetailState extends Equatable {
   const MovieDetailState({
-    this.movie = Movie.empty,
+    this.movie = MovieDetail.empty,
     this.trailer = const [],
+    this.genres = const [],
     this.errorMessage = '',
     this.status = MovieDetailStatus.initial,
   });
   final List<MovieTrailer> trailer;
-  final Movie movie;
+  final List<Genre> genres;
+  final MovieDetail movie;
   final String errorMessage;
   final MovieDetailStatus status;
 
   MovieDetailState copyWith(
-      {Movie? movie,
+      {MovieDetail? movie,
       List<MovieTrailer>? trailer,
+      List<Genre>? genres,
       String? errorMessage,
       MovieDetailStatus? status}) {
     return MovieDetailState(
       errorMessage: errorMessage ?? this.errorMessage,
       movie: movie ?? this.movie,
       trailer: trailer ?? this.trailer,
+      genres: genres ?? this.genres,
       status: status ?? this.status,
     );
   }
 
   @override
-  List<Object> get props => [movie, trailer, errorMessage, status];
+  List<Object> get props => [movie, trailer, genres, errorMessage, status];
 }

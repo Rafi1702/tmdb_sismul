@@ -124,7 +124,7 @@ class _PopularMoviesGridState extends State<_PopularMoviesGrid> {
 
 class _PosterGrid extends StatelessWidget {
   final bool hasReachedMax;
-  final List<Movie> movies;
+  final List<MovieGeneral> movies;
   const _PosterGrid({
     required this.hasReachedMax,
     required this.movies,
@@ -156,7 +156,14 @@ class _PosterGrid extends StatelessWidget {
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(flex: 5, child: MoviePoster(movie: movies[index])),
+                    Expanded(
+                      flex: 5,
+                      child: MoviePoster(
+                        posterPath: movies[index].posterPath!,
+                        vote: movies[index].voteAverage!,
+                        movieId: movies[index].id,
+                      ),
+                    ),
                     Expanded(child: Text(movies[index].title ?? 'No Title')),
                   ],
                 );

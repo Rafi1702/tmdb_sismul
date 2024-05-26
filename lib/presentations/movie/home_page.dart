@@ -143,7 +143,7 @@ class _MovieListHeader extends StatelessWidget {
 }
 
 class _MoviesList extends StatelessWidget {
-  final List<Movie> movies;
+  final List<MovieGeneral> movies;
 
   const _MoviesList({
     required this.movies,
@@ -162,7 +162,9 @@ class _MoviesList extends StatelessWidget {
         },
         itemBuilder: (context, index) {
           return MoviePoster(
-            movie: movies[index],
+            posterPath: movies[index].posterPath!,
+            vote: movies[index].voteAverage!,
+            movieId: movies[index].id,
           );
         },
       ),

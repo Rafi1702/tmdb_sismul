@@ -11,15 +11,15 @@ class UpcomingMoviesState extends Equatable {
     this.hasReachedMax = false,
   });
 
-  final List<Movie> upComingMovies;
-  final List<Movie> allUpcomingMovies;
+  final List<MovieGeneral> upComingMovies;
+  final List<MovieGeneral> allUpcomingMovies;
   final UpcomingMovieStatus status;
   final String errorMessage;
   final bool hasReachedMax;
 
   UpcomingMoviesState copyWith({
-    List<Movie>? upComingMovies,
-    List<Movie>? allUpcomingMovies,
+    List<MovieGeneral>? upComingMovies,
+    List<MovieGeneral>? allUpcomingMovies,
     UpcomingMovieStatus? status,
     String? errorMessage,
     bool? hasReachedMax,

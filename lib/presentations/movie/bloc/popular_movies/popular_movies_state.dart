@@ -11,15 +11,15 @@ class PopularMoviesState extends Equatable {
     this.errorMessage = '',
   });
 
-  final List<Movie> popularMovies;
-  final List<Movie> allPopularMovies;
+  final List<MovieGeneral> popularMovies;
+  final List<MovieGeneral> allPopularMovies;
   final PopularMovieStatus status;
   final bool hasReachedMax;
   final String errorMessage;
 
   PopularMoviesState copyWith(
-      {List<Movie>? popularMovies,
-      List<Movie>? allPopularMovies,
+      {List<MovieGeneral>? popularMovies,
+      List<MovieGeneral>? allPopularMovies,
       PopularMovieStatus? status,
       bool? hasReachedMax,
       String? errorMessage}) {

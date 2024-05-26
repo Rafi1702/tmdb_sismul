@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-Movie movieFromJson(String str) => Movie.fromJson(json.decode(str));
+MovieGeneral movieFromJson(String str) => MovieGeneral.fromJson(json.decode(str));
 
-String movieToJson(Movie data) => json.encode(data.toJson());
+String movieToJson(MovieGeneral data) => json.encode(data.toJson());
 
-class Movie {
+class MovieGeneral {
   final bool? adult;
   final String? backdropPath;
   final List<int>? genreIds;
@@ -20,7 +20,7 @@ class Movie {
   final double? voteAverage;
   final int? voteCount;
 
-  const Movie({
+  const MovieGeneral({
     this.adult,
     this.backdropPath,
     this.genreIds,
@@ -37,9 +37,9 @@ class Movie {
     this.voteCount,
   });
 
-  static const empty = Movie(id: 0);
+  static const empty = MovieGeneral(id: 0);
 
-  factory Movie.fromJson(Map<String, dynamic> json) => Movie(
+  factory MovieGeneral.fromJson(Map<String, dynamic> json) => MovieGeneral(
         adult: json["adult"],
         backdropPath: json["backdrop_path"],
         genreIds: json["genre_ids"] == null
