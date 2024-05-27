@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import 'package:tmdb_sismul/models/movie_detail.dart';
 import 'package:tmdb_sismul/models/movie_trailer.dart';
+import 'package:tmdb_sismul/models/review.dart';
 import 'package:tmdb_sismul/repository/movies.dart';
 
 part 'movie_detail_event.dart';
@@ -19,14 +20,13 @@ class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
     emit(state.copyWith(status: MovieDetailStatus.loading));
     try {
       final movieDetail = await repo.getMovieDetails(event.id);
-
+      final movieReviews = await repo.getMovieReviews(event.id);
       // final movieTrailer = await repo.getMovieTrailer(event.id);
 
       emit(
         state.copyWith(
           movie: movieDetail,
-          // trailer: movieTrailer,
-
+          reviews: movieReviews,
           status: MovieDetailStatus.loaded,
         ),
       );

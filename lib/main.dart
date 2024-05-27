@@ -10,6 +10,7 @@ import 'package:tmdb_sismul/presentations/movie/bloc/upcoming_movies/upcoming_mo
 import 'package:tmdb_sismul/presentations/movie/home_page.dart';
 import 'package:tmdb_sismul/presentations/movie/movie_detail_page.dart';
 import 'package:tmdb_sismul/presentations/movie/see_all_movies.dart';
+import 'package:tmdb_sismul/styles/text_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,14 +27,27 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF192841),
+        ),
         useMaterial3: true,
+        textTheme: textTheme.apply(
+          bodyColor: const Color(0xFF192841),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF192841),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4.0),
+            ),
+          ),
+        ),
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(
               splashFactory: NoSplash.splashFactory,
               enableFeedback: false,
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              overlayColor: MaterialStateProperty.all(Colors.transparent)),
+              overlayColor: WidgetStateProperty.all(Colors.transparent)),
         ),
       ),
       routes: {

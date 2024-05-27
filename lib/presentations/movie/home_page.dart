@@ -129,7 +129,7 @@ class _MovieListHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(title, style: Theme.of(context).textTheme.bodyLarge),
+        Text(title, style: Theme.of(context).textTheme.titleLarge),
         TextButton(
           child: const Text('See All'),
           onPressed: () {

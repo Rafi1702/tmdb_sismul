@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tmdb_sismul/models/movie_detail.dart';
+import 'package:tmdb_sismul/models/review.dart';
 import 'package:tmdb_sismul/presentations/movie/bloc/movie_detail/movie_detail_bloc.dart';
 import 'package:tmdb_sismul/presentations/movie/widgets/movies_poster.dart';
 
@@ -86,9 +87,16 @@ class _MovieBody extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Expanded(child: _MoviePicture(movie: state.movie)),
+                const SizedBox(height: 10.0),
                 Expanded(child: _MovieDetail(movie: state.movie)),
                 const SizedBox(height: 10.0),
-                const Expanded(child: _MovieDescription()),
+                Expanded(
+                  flex: 2,
+                  child: _MovieDescription(
+                    movie: state.movie,
+                    reviews: state.reviews,
+                  ),
+                ),
               ],
             );
           case MovieDetailStatus.error:
@@ -134,33 +142,125 @@ class _MovieDetail extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          MoviePoster(
-            constraints: const BoxConstraints(
-              minWidth: 100.0,
-              maxWidth: 100.0,
-              minHeight: 130.0,
-              maxHeight: 130.0,
-            ),
-            posterPath: movie.posterPath!,
-            vote: movie.voteAverage!,
-            movieId: movie.id!,
-            isActive: false,
-            isRatingShowed: false,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(movie.title ?? ''),
-              Row(
-                children: [
-                  Text(movie.originalLanguage ?? ''),
-                  Text(movie.voteAverage!.toStringAsFixed(1)),
-                ],
+          Expanded(
+            child: MoviePoster(
+              constraints: const BoxConstraints(
+                maxHeight: 200.0,
               ),
-            ],
+              posterPath: movie.posterPath!,
+              vote: movie.voteAverage!,
+              movieId: movie.id!,
+              isActive: false,
+              isRatingShowed: false,
+            ),
           ),
+          const SizedBox(width: 20.0),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FittedBox(
+                  child: Text(movie.title ?? '',
+                      style: Theme.of(context).textTheme.titleLarge),
+                ),
+                const SizedBox(height: 10.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(2.0),
+                        color: Colors.grey[400],
+                      ),
+                      child: FittedBox(
+                        child: Text(
+                          movie.originalLanguage ?? '',
+                          style:
+                              Theme.of(context).textTheme.labelLarge!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10.0),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          movie.voteAverage!.toStringAsFixed(1),
+                          style:
+                              Theme.of(context).textTheme.labelMedium!.copyWith(
+                                    color: Colors.yellow,
+                                  ),
+                        ),
+                        const Icon(
+                          Icons.star_outline,
+                          color: Colors.yellow,
+                          size: 20.0,
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                  ],
+                ),
+                const SizedBox(height: 10.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Genres:'),
+                    Wrap(
+                      spacing: 4.0,
+                      runSpacing: 4.0,
+                      runAlignment: WrapAlignment.spaceAround,
+                      children: movie.genres!
+                          .map(
+                            (e) => Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 4.0),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4.0),
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    Colors.green,
+                                    Colors.blue,
+                                  ],
+                                ),
+                              ),
+                              child: Text(
+                                e.name!,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelMedium!
+                                    .copyWith(
+                                      color: Colors.white,
+                                    ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                ElevatedButton.icon(
+                  icon: const Icon(
+                    Icons.play_arrow_rounded,
+                    color: Colors.white,
+                  ),
+                  label: Text('Watch Trailer',
+                      style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                            color: Colors.white,
+                          )),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
+          // const Spacer(),
         ],
       ),
     );
@@ -168,10 +268,43 @@ class _MovieDetail extends StatelessWidget {
 }
 
 class _MovieDescription extends StatelessWidget {
-  const _MovieDescription();
-
+  const _MovieDescription({
+    required this.movie,
+    required this.reviews,
+  });
+  final MovieDetail movie;
+  final List<Review> reviews;
   @override
   Widget build(BuildContext context) {
-    return Container(child: const Text('Container'));
+    return SizedBox(
+      child: DefaultTabController(
+        length: 2,
+        child: Column(
+          children: [
+            const TabBar(
+              tabs: [Tab(text: 'Overview'), Tab(text: 'Reviews')],
+            ),
+            Expanded(
+              flex: 2,
+              child: TabBarView(
+                children: [
+                  Text(movie.overview!),
+                  ListView.separated(
+                    itemCount: reviews.length,
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 4.0),
+                    itemBuilder: (context, index) => ListTile(
+                      title: Text(
+                        reviews[index].authorDetails!.username!,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
