@@ -11,10 +11,20 @@ String reviewToJson(Review data) => json.encode(data.toJson());
 class Review {
   final String? author;
   final AuthorDetails? authorDetails;
+  final String? content;
+  final DateTime? createdAt;
+  final String? id;
+  final DateTime? updatedAt;
+  final String? url;
 
   Review({
     this.author,
     this.authorDetails,
+    this.content,
+    this.createdAt,
+    this.id,
+    this.updatedAt,
+    this.url,
   });
 
   factory Review.fromJson(Map<String, dynamic> json) => Review(
@@ -22,11 +32,25 @@ class Review {
         authorDetails: json["author_details"] == null
             ? null
             : AuthorDetails.fromJson(json["author_details"]),
+        content: json["content"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        id: json["id"],
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        url: json["url"],
       );
 
   Map<String, dynamic> toJson() => {
         "author": author,
         "author_details": authorDetails?.toJson(),
+        "content": content,
+        "created_at": createdAt?.toIso8601String(),
+        "id": id,
+        "updated_at": updatedAt?.toIso8601String(),
+        "url": url,
       };
 }
 

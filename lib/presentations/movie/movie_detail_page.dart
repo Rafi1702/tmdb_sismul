@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:tmdb_sismul/models/movie_detail.dart';
 import 'package:tmdb_sismul/models/review.dart';
 import 'package:tmdb_sismul/presentations/movie/bloc/movie_detail/movie_detail_bloc.dart';
@@ -225,8 +226,8 @@ class _MovieDetail extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(4.0),
                                 gradient: const LinearGradient(
                                   colors: [
-                                    Colors.green,
-                                    Colors.blue,
+                                    Colors.greenAccent,
+                                    Colors.lightBlueAccent,
                                   ],
                                 ),
                               ),
@@ -282,29 +283,94 @@ class _MovieDescription extends StatelessWidget {
         child: Column(
           children: [
             const TabBar(
-              tabs: [Tab(text: 'Overview'), Tab(text: 'Reviews')],
+              tabs: [
+                Tab(text: 'Overview'),
+                Tab(text: 'Reviews'),
+              ],
             ),
             Expanded(
               flex: 2,
-              child: TabBarView(
-                children: [
-                  Text(movie.overview!),
-                  ListView.separated(
-                    itemCount: reviews.length,
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: 4.0),
-                    itemBuilder: (context, index) => ListTile(
-                      title: Text(
-                        reviews[index].authorDetails!.username!,
-                      ),
-                    ),
-                  )
-                ],
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8.0,
+                  vertical: 10.0,
+                ),
+                child: TabBarView(
+                  clipBehavior: Clip.none,
+                  children: [
+                    movie.overview!.isEmpty
+                        ? const Center(child: Text('Overview not Available'))
+                        : Text(
+                            movie.overview!,
+                          ),
+                    reviews.isEmpty
+                        ? const Center(
+                            child: Text('Reviews Not Available'),
+                          )
+                        : ListView.separated(
+                            itemCount: reviews.length,
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: 20.0),
+                            itemBuilder: (context, index) => _AuthorReview(
+                              review: reviews[index],
+                            ),
+                          )
+                  ],
+                ),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _AuthorReview extends StatelessWidget {
+  const _AuthorReview({required this.review});
+  final Review review;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          clipBehavior: Clip.none,
+          padding: const EdgeInsets.all(8.0),
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: Color(0xFF192841),
+          ),
+          child: Image.network(
+            '${review.authorDetails!.avatarPath}',
+            errorBuilder: (context, error, stackTrace) => const Icon(
+              Icons.question_mark,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(
+          width: 10.0,
+        ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                review.authorDetails!.username!,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              Text(DateFormat.yMMMd().format(review.createdAt!)),
+              const SizedBox(height: 10.0),
+              Text(
+                review.content!,
+                textAlign: TextAlign.justify,
+              ),
+            ],
+          ),
+        )
+      ],
     );
   }
 }

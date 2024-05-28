@@ -9,6 +9,7 @@ class MoviePoster extends StatelessWidget {
   final bool? isActive;
   final BoxConstraints? constraints;
   final bool? isRatingShowed;
+  final BoxFit? imageFit;
   const MoviePoster({
     super.key,
     required this.vote,
@@ -17,6 +18,7 @@ class MoviePoster extends StatelessWidget {
     this.isActive = true,
     this.isRatingShowed = true,
     this.constraints,
+    this.imageFit,
   });
 
   @override
@@ -54,7 +56,7 @@ class MoviePoster extends StatelessWidget {
                   );
                 }),
               ).image,
-              fit: BoxFit.cover,
+              fit: imageFit ?? BoxFit.cover,
             ),
           ),
           child: isRatingShowed ?? true
