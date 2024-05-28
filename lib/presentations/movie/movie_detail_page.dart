@@ -100,17 +100,13 @@ class _MovieDetail extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: MoviePoster(
-              constraints: const BoxConstraints(
-                maxHeight: 200.0,
-              ),
-              posterPath: movie.posterPath!,
-              vote: movie.voteAverage!,
-              movieId: movie.id!,
-              isActive: false,
-              isRatingShowed: false,
-            ),
+          MoviePoster(
+            constraints: const BoxConstraints(),
+            posterPath: movie.posterPath!,
+            vote: movie.voteAverage!,
+            movieId: movie.id!,
+            isActive: false,
+            isRatingShowed: false,
           ),
           const SizedBox(width: 20.0),
           Expanded(
@@ -218,7 +214,6 @@ class _MovieDetail extends StatelessWidget {
               ],
             ),
           ),
-          // const Spacer(),
         ],
       ),
     );

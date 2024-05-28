@@ -9,6 +9,7 @@ import 'package:tmdb_sismul/presentations/movie/bloc/popular_movies/popular_movi
 import 'package:tmdb_sismul/presentations/movie/bloc/upcoming_movies/upcoming_movies_bloc.dart';
 import 'package:tmdb_sismul/presentations/movie/see_all_movies.dart';
 import 'package:tmdb_sismul/presentations/movie/widgets/movies_poster.dart';
+import 'package:tmdb_sismul/presentations/movie/widgets/shimmer_movie_poster.dart';
 
 class MyHomePage extends StatefulWidget {
   static const route = '/';
@@ -131,6 +132,7 @@ class _NowPlayingMovies extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Now Playing', style: Theme.of(context).textTheme.titleLarge),
+        const SizedBox(height: 4),
         BlocBuilder<NowPlayingBloc, NowPlayingState>(
           builder: (context, state) {
             return CarouselSlider(
@@ -247,22 +249,7 @@ class _LoadingMovieBanner extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         separatorBuilder: (context, index) => const SizedBox(width: 10.0),
         itemBuilder: (context, index) {
-          return Shimmer.fromColors(
-            baseColor: Colors.grey.shade300,
-            highlightColor: Colors.grey.shade100,
-            child: Container(
-              constraints: const BoxConstraints(
-                minWidth: 116.0,
-                maxWidth: 116.0,
-                minHeight: 200.0,
-                maxHeight: 200.0,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                color: Colors.grey,
-              ),
-            ),
-          );
+          return const ShimmerMoviePoster();
         },
       ),
     );

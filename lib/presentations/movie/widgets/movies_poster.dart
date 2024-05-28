@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:tmdb_sismul/presentations/movie/movie_detail_page.dart';
+import 'package:tmdb_sismul/presentations/movie/widgets/shimmer_movie_poster.dart';
 
 class MoviePoster extends StatelessWidget {
   final double vote;
@@ -31,48 +32,83 @@ class MoviePoster extends StatelessWidget {
                   .pushNamed(MovieDetailPage.route, arguments: movieId)
               : null;
         },
-        child: Container(
-          padding: const EdgeInsets.only(top: 4.0, left: 4.0),
-          constraints: constraints ??
-              const BoxConstraints(
-                minWidth: 116.0,
-                maxWidth: 116.0,
-                minHeight: 200.0,
-                maxHeight: 200.0,
-              ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            image: DecorationImage(
-              image: Image.network(
-                'http://image.tmdb.org/t/p/w500/$posterPath',
-                filterQuality: FilterQuality.none,
-                loadingBuilder: ((context, child, loadingProgress) {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      value: loadingProgress!.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
-                          : null,
+        child: Stack(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: ConstrainedBox(
+                constraints: constraints ??
+                    const BoxConstraints(
+                      minWidth: 116.0,
+                      maxWidth: 116.0,
+                      minHeight: 200.0,
+                      maxHeight: 200.0,
                     ),
-                  );
-                }),
-              ).image,
-              fit: imageFit ?? BoxFit.cover,
+                child: Image.network(
+                  'http://image.tmdb.org/t/p/w500/$posterPath',
+                  filterQuality: FilterQuality.none,
+                  fit: BoxFit.cover,
+                  loadingBuilder: ((context, child, loadingProgress) {
+                    if (loadingProgress == null) {
+                      return child;
+                    }
+                    return const Center(
+                      child: ShimmerMoviePoster(),
+                    );
+                  }),
+                ),
+              ),
             ),
-          ),
-          child: isRatingShowed ?? true
-              ? Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    '⭐ ${vote.toStringAsFixed(1)}',
-                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                          color: Colors.white,
-                        ),
-                  ),
-                )
-              : null,
+            isRatingShowed ?? true
+                ? Padding(
+                    padding: const EdgeInsets.only(
+                      top: 4.0,
+                      left: 4.0,
+                    ),
+                    child: Text(
+                      '⭐ ${vote.toStringAsFixed(1)}',
+                      style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                            color: Colors.white,
+                          ),
+                    ),
+                  )
+                : Container(),
+          ],
         ),
       ),
+      // child: Container(
+      //   padding: const EdgeInsets.only(top: 4.0, left: 4.0),
+
+      //   decoration: BoxDecoration(
+      //     borderRadius: BorderRadius.circular(10.0),
+      //     image: DecorationImage(
+      //       image: Image.network(
+      //         'http://image.tmdb.org/t/p/w500/$posterPath',
+      //         filterQuality: FilterQuality.none,
+      //         loadingBuilder: ((context, child, loadingProgress) {
+      //           if (loadingProgress == null) {
+      //             return child;
+      //           }
+      //           return const Center(
+      //             child: CircularProgressIndicator(),
+      //           );
+      //         }),
+      //       ).image,
+      //       fit: imageFit ?? BoxFit.cover,
+      //     ),
+      //   ),
+      //   child: isRatingShowed ?? true
+      //       ? Align(
+      //           alignment: Alignment.topLeft,
+      //           child: Text(
+      //             '⭐ ${vote.toStringAsFixed(1)}',
+      //             style: Theme.of(context).textTheme.labelMedium!.copyWith(
+      //                   color: Colors.white,
+      //                 ),
+      //           ),
+      //         )
+      //       : null,
+      // ),
     );
   }
 }

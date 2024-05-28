@@ -17,7 +17,6 @@ class _MovieTrailerPageState extends State<MovieTrailerPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = YoutubePlayerController();
   }
@@ -25,6 +24,7 @@ class _MovieTrailerPageState extends State<MovieTrailerPage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MovieTrailerBloc, MovieTrailerState>(
+      buildWhen: (prev, current) => prev.trailers != current.trailers,
       builder: (context, state) {
         switch (state.status) {
           case MovieTrailerStatus.loading:
@@ -35,9 +35,10 @@ class _MovieTrailerPageState extends State<MovieTrailerPage> {
             );
           case MovieTrailerStatus.loaded:
             return YoutubePlayerScaffold(
+              autoFullScreen: false,
               controller: _controller
                 ..loadVideoById(
-                  videoId: state.trailers.map((e) => e.key).toList().first,
+                  videoId: state.trailers.first.key,
                   startSeconds: 0,
                 ),
               builder: (context, player) => SafeArea(child: player),
