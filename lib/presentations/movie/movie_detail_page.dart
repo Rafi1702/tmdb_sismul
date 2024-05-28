@@ -4,54 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:tmdb_sismul/models/movie_detail.dart';
 import 'package:tmdb_sismul/models/review.dart';
 import 'package:tmdb_sismul/presentations/movie/bloc/movie_detail/movie_detail_bloc.dart';
+import 'package:tmdb_sismul/presentations/movie/movie_trailer.dart';
 import 'package:tmdb_sismul/presentations/movie/widgets/movies_poster.dart';
-
-// class MoviesDetailPage extends StatefulWidget {
-//   static const route = '/movie_detail';
-//   const MoviesDetailPage({super.key});
-
-//   @override
-//   State<MoviesDetailPage> createState() => _MoviesDetailPageState();
-// }
-
-// class _MoviesDetailPageState extends State<MoviesDetailPage> {
-//   late YoutubePlayerController _controller;
-
-//   @override
-//   void initState() {
-
-//     _controller = YoutubePlayerController(
-//       flags: const YoutubePlayerFlags(
-//         autoPlay: false,
-//         mute: false,
-//         loop: false,
-//       ),
-//       initialVideoId: '',
-//     );
-
-//     super.initState();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: SafeArea(
-//         child: BlocBuilder<MovieDetailBloc, MovieDetailState>(
-//           builder: (context, state) {
-//             return YoutubePlayer(
-//               aspectRatio: 16 / 9,
-//               controller: _controller
-//                 ..loadPlaylist(
-//                   list: state.trailer.map((e) => e.key).toList(),
-//                   startSeconds: 0,
-//                 ),
-//             );
-//           },
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 class MovieDetailPage extends StatelessWidget {
   static const route = '/movie_detail';
@@ -256,7 +210,10 @@ class _MovieDetail extends StatelessWidget {
                       style: Theme.of(context).textTheme.labelMedium!.copyWith(
                             color: Colors.white,
                           )),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamed(MovieTrailerPage.route, arguments: movie.id);
+                  },
                 ),
               ],
             ),

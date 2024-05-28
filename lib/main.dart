@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tmdb_sismul/dependency.dart';
 
 import 'package:tmdb_sismul/presentations/movie/bloc/movie_detail/movie_detail_bloc.dart';
+import 'package:tmdb_sismul/presentations/movie/bloc/movie_trailer/movie_trailer_bloc.dart';
 import 'package:tmdb_sismul/presentations/movie/bloc/now_playing/now_playing_bloc.dart';
 
 import 'package:tmdb_sismul/presentations/movie/bloc/popular_movies/popular_movies_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:tmdb_sismul/presentations/movie/bloc/upcoming_movies/upcoming_mo
 import 'package:tmdb_sismul/presentations/movie/home_page.dart';
 import 'package:tmdb_sismul/presentations/movie/movie_detail_page.dart';
 import 'package:tmdb_sismul/presentations/movie/see_all_movies.dart';
+import 'package:tmdb_sismul/presentations/movie/movie_trailer.dart';
 import 'package:tmdb_sismul/styles/text_theme.dart';
 
 void main() async {
@@ -82,6 +84,14 @@ class MyApp extends StatelessWidget {
             create: (context) =>
                 sl<MovieDetailBloc>()..add(GetMovieDetailEvent(id)),
             child: const MovieDetailPage(),
+          );
+        },
+        MovieTrailerPage.route: (context) {
+          final id = ModalRoute.of(context)!.settings.arguments as int;
+          return BlocProvider(
+            create: (context) =>
+                sl<MovieTrailerBloc>()..add(GetMovieTrailerEvent(movieId: id)),
+            child: const MovieTrailerPage(),
           );
         }
       },

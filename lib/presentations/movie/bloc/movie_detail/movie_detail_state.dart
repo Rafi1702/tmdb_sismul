@@ -6,13 +6,12 @@ class MovieDetailState extends Equatable {
   const MovieDetailState({
     this.movie = MovieDetail.empty,
     this.trailer = const [],
-    this.genres = const [],
     this.reviews = const [],
     this.errorMessage = '',
     this.status = MovieDetailStatus.initial,
   });
   final List<MovieTrailer> trailer;
-  final List<Genre> genres;
+
   final List<Review> reviews;
   final MovieDetail movie;
   final String errorMessage;
@@ -29,7 +28,6 @@ class MovieDetailState extends Equatable {
       errorMessage: errorMessage ?? this.errorMessage,
       movie: movie ?? this.movie,
       trailer: trailer ?? this.trailer,
-      genres: genres ?? this.genres,
       reviews: reviews ?? this.reviews,
       status: status ?? this.status,
     );
@@ -39,7 +37,6 @@ class MovieDetailState extends Equatable {
   List<Object> get props => [
         movie,
         trailer,
-        genres,
         errorMessage,
         status,
         reviews,
