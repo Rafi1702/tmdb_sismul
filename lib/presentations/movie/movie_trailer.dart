@@ -23,24 +23,28 @@ class _MovieTrailerPageState extends State<MovieTrailerPage> {
   }
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    _controller.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocBuilder<MovieTrailerBloc, MovieTrailerState>(
       builder: (context, state) {
-        return YoutubePlayerScaffold(
-          controller: _controller
-            ..loadPlaylist(
-              list: state.trailers.map((e) => e.key).toList(),
-              startSeconds: 0,
-            ),
-          builder: (context, player) => player,
-        );
+        switch (state.status) {
+          case MovieTrailerStatus.loading:
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          case MovieTrailerStatus.loaded:
+            return YoutubePlayerScaffold(
+              controller: _controller
+                ..loadVideoById(
+                  videoId: state.trailers.map((e) => e.key).toList().first,
+                  startSeconds: 0,
+                ),
+              builder: (context, player) => SafeArea(child: player),
+            );
+          default:
+            return Container();
+        }
       },
     );
   }

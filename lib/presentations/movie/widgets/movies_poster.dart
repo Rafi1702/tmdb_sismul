@@ -45,6 +45,7 @@ class MoviePoster extends StatelessWidget {
             image: DecorationImage(
               image: Image.network(
                 'http://image.tmdb.org/t/p/w500/$posterPath',
+                filterQuality: FilterQuality.none,
                 loadingBuilder: ((context, child, loadingProgress) {
                   return Center(
                     child: CircularProgressIndicator(

@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:tmdb_sismul/models/movie.dart';
 import 'package:tmdb_sismul/presentations/movie/bloc/now_playing/now_playing_bloc.dart';
 import 'package:tmdb_sismul/presentations/movie/bloc/popular_movies/popular_movies_bloc.dart';
@@ -67,9 +68,7 @@ class _PopularMovies extends StatelessWidget {
           builder: (context, state) {
             switch (state.status) {
               case PopularMovieStatus.initial:
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                return const _LoadingMovieBanner();
               case PopularMovieStatus.loaded:
                 return _MoviesList(
                   movies: state.popularMovies,
@@ -104,9 +103,7 @@ class _UpComingMovies extends StatelessWidget {
           builder: (context, state) {
             switch (state.status) {
               case UpcomingMovieStatus.initial:
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                return const _LoadingMovieBanner();
               case UpcomingMovieStatus.loaded:
                 return _MoviesList(
                   movies: state.upComingMovies,
@@ -231,6 +228,40 @@ class _MoviesList extends StatelessWidget {
             posterPath: movies[index].posterPath!,
             vote: movies[index].voteAverage!,
             movieId: movies[index].id,
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _LoadingMovieBanner extends StatelessWidget {
+  const _LoadingMovieBanner();
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxHeight: 200),
+      child: ListView.separated(
+        itemCount: 10,
+        scrollDirection: Axis.horizontal,
+        separatorBuilder: (context, index) => const SizedBox(width: 10.0),
+        itemBuilder: (context, index) {
+          return Shimmer.fromColors(
+            baseColor: Colors.grey.shade300,
+            highlightColor: Colors.grey.shade100,
+            child: Container(
+              constraints: const BoxConstraints(
+                minWidth: 116.0,
+                maxWidth: 116.0,
+                minHeight: 200.0,
+                maxHeight: 200.0,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                color: Colors.grey,
+              ),
+            ),
           );
         },
       ),
