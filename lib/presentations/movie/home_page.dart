@@ -1,6 +1,9 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:tmdb_sismul/models/movie.dart';
+import 'package:tmdb_sismul/presentations/movie/bloc/now_playing/now_playing_bloc.dart';
 import 'package:tmdb_sismul/presentations/movie/bloc/popular_movies/popular_movies_bloc.dart';
 import 'package:tmdb_sismul/presentations/movie/bloc/upcoming_movies/upcoming_movies_bloc.dart';
 import 'package:tmdb_sismul/presentations/movie/see_all_movies.dart';
@@ -19,15 +22,21 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(
+    return Scaffold(
+      appBar: AppBar(
+        title: SvgPicture.asset('assets/TMDB.svg', width: 200.0),
+      ),
+      body: const SafeArea(
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(
               horizontal: 16.0,
+              vertical: 10.0,
             ),
             child: Column(
               children: [
+                _NowPlayingMovies(),
+                SizedBox(height: 20.0),
                 _PopularMovies(),
                 SizedBox(height: 20.0),
                 _UpComingMovies(),
@@ -109,6 +118,63 @@ class _UpComingMovies extends StatelessWidget {
               default:
                 return Container();
             }
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _NowPlayingMovies extends StatelessWidget {
+  const _NowPlayingMovies();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Now Playing', style: Theme.of(context).textTheme.titleLarge),
+        BlocBuilder<NowPlayingBloc, NowPlayingState>(
+          builder: (context, state) {
+            return CarouselSlider(
+              items: state.nowPlayingMovies
+                  .map(
+                    (e) => Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(
+                            'http://image.tmdb.org/t/p/w500/${e.backdropPath ?? ''}',
+                          ),
+                        ),
+                      ),
+                      child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: SizedBox(
+                          width: double.infinity / 2,
+                          child: Text(
+                            e.title!,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
+              options: CarouselOptions(
+                autoPlay: true,
+                clipBehavior: Clip.none,
+              ),
+            );
           },
         ),
       ],

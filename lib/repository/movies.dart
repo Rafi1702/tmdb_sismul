@@ -33,6 +33,17 @@ class MovieRepository {
     }
   }
 
+  Future<List<MovieGeneral>> getNowPlayingMovies() async {
+    try {
+      final response = await client.get('/movie/now_playing');
+      return (response.data['results'] as List)
+          .map((e) => MovieGeneral.fromJson(e))
+          .toList();
+    } on DioException catch (e) {
+      throw Exception(e);
+    }
+  }
+
   Future<MovieDetail> getMovieDetails(int id) async {
     try {
       final response = await client.get('/movie/$id');

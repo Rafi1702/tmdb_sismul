@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tmdb_sismul/dependency.dart';
 
 import 'package:tmdb_sismul/presentations/movie/bloc/movie_detail/movie_detail_bloc.dart';
+import 'package:tmdb_sismul/presentations/movie/bloc/now_playing/now_playing_bloc.dart';
 
 import 'package:tmdb_sismul/presentations/movie/bloc/popular_movies/popular_movies_bloc.dart';
 import 'package:tmdb_sismul/presentations/movie/bloc/upcoming_movies/upcoming_movies_bloc.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF192841),
@@ -33,6 +35,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         textTheme: textTheme.apply(
           bodyColor: const Color(0xFF192841),
+        ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF192841),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
@@ -53,6 +58,10 @@ class MyApp extends StatelessWidget {
       routes: {
         MyHomePage.route: (context) => MultiBlocProvider(
               providers: [
+                BlocProvider(
+                  create: (context) => sl<NowPlayingBloc>()
+                    ..add(const GetNowPlayingMovieEvent()),
+                ),
                 BlocProvider(
                   create: (context) =>
                       sl<PopularMoviesBloc>()..add(GetPopularMoviesEvent()),
