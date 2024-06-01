@@ -59,7 +59,6 @@ class PopularMoviesBloc
                 hasReachedMax: false,
               ),
       );
-      print(state.allPopularMovies.length);
     } catch (e) {
       emit(
         state.copyWith(
