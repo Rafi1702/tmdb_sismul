@@ -6,3 +6,5 @@ class PopularMoviesEvent extends Equatable {
 }
 
 class GetPopularMoviesEvent extends PopularMoviesEvent {}
+
+class LoadMorePopularMoviesEvent extends PopularMoviesEvent {}

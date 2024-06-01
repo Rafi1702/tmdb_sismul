@@ -14,7 +14,11 @@ class MovieRepository {
         '/movie/popular?page=$page',
       );
 
-      return (response.data['results'] as List)
+      // return (response.data['results'] as List)
+      //     .map((e) => MovieGeneral.fromJson(e))
+      //     .toList();
+
+      return List.from(response.data['results'])
           .map((e) => MovieGeneral.fromJson(e))
           .toList();
     } on DioException catch (e) {

@@ -47,6 +47,8 @@ class MoviePoster extends StatelessWidget {
                 child: Image.network(
                   'http://image.tmdb.org/t/p/w500/$posterPath',
                   filterQuality: FilterQuality.none,
+                  cacheWidth: 116,
+                  cacheHeight: 200,
                   fit: BoxFit.cover,
                   loadingBuilder: ((context, child, loadingProgress) {
                     if (loadingProgress == null) {
@@ -76,39 +78,6 @@ class MoviePoster extends StatelessWidget {
           ],
         ),
       ),
-      // child: Container(
-      //   padding: const EdgeInsets.only(top: 4.0, left: 4.0),
-
-      //   decoration: BoxDecoration(
-      //     borderRadius: BorderRadius.circular(10.0),
-      //     image: DecorationImage(
-      //       image: Image.network(
-      //         'http://image.tmdb.org/t/p/w500/$posterPath',
-      //         filterQuality: FilterQuality.none,
-      //         loadingBuilder: ((context, child, loadingProgress) {
-      //           if (loadingProgress == null) {
-      //             return child;
-      //           }
-      //           return const Center(
-      //             child: CircularProgressIndicator(),
-      //           );
-      //         }),
-      //       ).image,
-      //       fit: imageFit ?? BoxFit.cover,
-      //     ),
-      //   ),
-      //   child: isRatingShowed ?? true
-      //       ? Align(
-      //           alignment: Alignment.topLeft,
-      //           child: Text(
-      //             '⭐ ${vote.toStringAsFixed(1)}',
-      //             style: Theme.of(context).textTheme.labelMedium!.copyWith(
-      //                   color: Colors.white,
-      //                 ),
-      //           ),
-      //         )
-      //       : null,
-      // ),
     );
   }
 }

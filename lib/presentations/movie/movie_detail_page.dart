@@ -5,6 +5,7 @@ import 'package:tmdb_sismul/models/movie_detail.dart';
 import 'package:tmdb_sismul/models/review.dart';
 import 'package:tmdb_sismul/presentations/movie/bloc/movie_detail/movie_detail_bloc.dart';
 import 'package:tmdb_sismul/presentations/movie/movie_trailer.dart';
+// import 'package:tmdb_sismul/presentations/movie/movie_trailer.dart';
 import 'package:tmdb_sismul/presentations/movie/widgets/movies_poster.dart';
 
 class MovieDetailPage extends StatelessWidget {

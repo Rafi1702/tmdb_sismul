@@ -69,9 +69,10 @@ class __UpcomingMoviesGridState extends State<_UpcomingMoviesGrid> {
       child: BlocBuilder<UpcomingMoviesBloc, UpcomingMoviesState>(
         builder: (context, state) {
           return _PosterGrid(
-              hasReachedMax: state.hasReachedMax,
-              movies: state.allUpcomingMovies,
-              controller: _controller);
+            hasReachedMax: state.hasReachedMax,
+            movies: state.allUpcomingMovies,
+            controller: _controller,
+          );
         },
       ),
     );
@@ -101,7 +102,7 @@ class _PopularMoviesGridState extends State<_PopularMoviesGrid> {
   void scrollListener() {
     if (_controller.offset >= _controller.position.maxScrollExtent &&
         !_controller.position.outOfRange) {
-      (widget.bloc as PopularMoviesBloc).add(GetPopularMoviesEvent());
+      (widget.bloc as PopularMoviesBloc).add(LoadMorePopularMoviesEvent());
     }
   }
 
@@ -123,8 +124,6 @@ class _PopularMoviesGridState extends State<_PopularMoviesGrid> {
 }
 
 class _PosterGrid extends StatelessWidget {
-  final bool hasReachedMax;
-  final List<MovieGeneral> movies;
   const _PosterGrid({
     required this.hasReachedMax,
     required this.movies,
@@ -132,6 +131,8 @@ class _PosterGrid extends StatelessWidget {
   }) : _controller = controller;
 
   final ScrollController _controller;
+  final bool hasReachedMax;
+  final List<MovieGeneral> movies;
 
   @override
   Widget build(BuildContext context) {

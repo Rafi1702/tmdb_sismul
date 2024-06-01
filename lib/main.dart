@@ -11,13 +11,12 @@ import 'package:tmdb_sismul/presentations/movie/bloc/popular_movies/popular_movi
 import 'package:tmdb_sismul/presentations/movie/bloc/upcoming_movies/upcoming_movies_bloc.dart';
 import 'package:tmdb_sismul/presentations/movie/home_page.dart';
 import 'package:tmdb_sismul/presentations/movie/movie_detail_page.dart';
-import 'package:tmdb_sismul/presentations/movie/see_all_movies.dart';
 import 'package:tmdb_sismul/presentations/movie/movie_trailer.dart';
+import 'package:tmdb_sismul/presentations/movie/see_all_movies.dart';
 import 'package:tmdb_sismul/styles/text_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await initializeDependencies();
   runApp(const MyApp());
 }
