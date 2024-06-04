@@ -14,6 +14,7 @@ class SeeAllMoviesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = ModalRoute.of(context)!.settings.arguments as Bloc;
     return Scaffold(
+      appBar: AppBar(title: const Text('Movie List')),
       body: SafeArea(
         child: Body(
           bloc: bloc,

@@ -34,6 +34,7 @@ class UpcomingMoviesBloc
       }
 
       _page = _page + 1;
+      if (_page > 5) return emit(state.copyWith(hasReachedMax: true));
       final data = await repo.getUpcomingMovies(page: _page);
       emit(
         data.isEmpty

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -19,9 +21,10 @@ class PopularMoviesBloc
   Future<void> getPopularMovies(
       GetPopularMoviesEvent event, Emitter<PopularMoviesState> emit) async {
     if (state.status == PopularMovieStatus.loaded) {
-      emit(state.copyWith(hasReachedMax: true));
       return;
     }
+
+    log(state.status.name);
 
     try {
       if (state.status == PopularMovieStatus.initial) {
@@ -46,11 +49,16 @@ class PopularMoviesBloc
 
   Future<void> loadMorePopularMovies(LoadMorePopularMoviesEvent event,
       Emitter<PopularMoviesState> emit) async {
+    if (state.hasReachedMax) return;
+
     try {
       emit(state.copyWith(page: state.page + 1));
+
+      if (state.page > 5) return emit(state.copyWith(hasReachedMax: true));
+
       final data = await repo.getPopularMovies(page: state.page);
 
-      emit(
+      return emit(
         data.isEmpty
             ? state.copyWith(hasReachedMax: true)
             : state.copyWith(

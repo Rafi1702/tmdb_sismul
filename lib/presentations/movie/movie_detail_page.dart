@@ -14,8 +14,9 @@ class MovieDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(
+    return Scaffold(
+      appBar: AppBar(title: const Text('Movie Detail')),
+      body: const SafeArea(
         child: CustomScrollView(
           slivers: [
             SliverFillRemaining(

@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 
 import 'package:tmdb_sismul/models/movie.dart';
 import 'package:tmdb_sismul/presentations/movie/bloc/now_playing/now_playing_bloc.dart';
@@ -11,22 +10,29 @@ import 'package:tmdb_sismul/presentations/movie/see_all_movies.dart';
 import 'package:tmdb_sismul/presentations/movie/widgets/movies_poster.dart';
 import 'package:tmdb_sismul/presentations/movie/widgets/shimmer_movie_poster.dart';
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   static const route = '/';
   const MyHomePage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: SvgPicture.asset('assets/TMDB.svg', width: 200.0),
+        titleSpacing: 0,
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              'assets/bc_1.png',
+              fit: BoxFit.cover,
+              width: 80,
+              height: 80,
+            ),
+            const Text('Cinema'),
+          ],
+        ),
       ),
       body: const SafeArea(
         child: SingleChildScrollView(
@@ -64,8 +70,6 @@ class _PopularMovies extends StatelessWidget {
           arguments: BlocProvider.of<PopularMoviesBloc>(context),
         ),
         BlocBuilder<PopularMoviesBloc, PopularMoviesState>(
-          buildWhen: (previous, current) =>
-              previous.popularMovies != current.popularMovies,
           builder: (context, state) {
             switch (state.status) {
               case PopularMovieStatus.initial:
